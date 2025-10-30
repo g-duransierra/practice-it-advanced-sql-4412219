@@ -25,3 +25,10 @@ FROM Events
 )
 SELECT eve.FirstEvent, eve.SecondEvent, MAX(eve.Gap) AS LongestGap
 FROM eve
+
+
+SELECT strftime('%Y-%m',EventDate) AS YearMonth, 
+SUM(TicketPrice) AS Revenue
+FROM Events
+GROUP BY YearMonth
+ORDER BY YearMonth
