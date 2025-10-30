@@ -64,3 +64,27 @@ VALUES
     ('David Wilson', '2023-04-05', 999.99),
     ('Emma Smith', '2023-05-12', 259.75);
 
+WITH sup AS (SELECT s.SupplierID, s.SupplierName, p.ProductName, 
+p.UnitPrice
+FROM Suppliers s 
+INNER JOIN Products p ON s.SupplierID = p.SupplierID
+WHERE p.UnitPrice > (
+    SELECT AVG(UnitPrice)
+    FROM Products
+)
+)
+
+SELECT sup.SupplierName, COUNT(*) AS ProdCount
+FROM sup 
+GROUP BY sup.SupplierName;
+
+
+WITH pro AS (
+    SELECT p.ProductName, p.CategoryID, p.StockQuantity
+    FROM Products p
+    WHERE p.StockQuantity < 50
+)
+
+SELECT pro.ProductName, c.CategoryName, pro.StockQuantity
+FROM pro 
+JOIN Categories c ON pro.CategoryID = c.CategoryID
