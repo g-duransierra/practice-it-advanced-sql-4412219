@@ -15,3 +15,13 @@ VALUES
     ('Art Exhibition', '2023-09-10', 'Art Gallery', 10.00),
     ('Sports Tournament', '2023-10-05', 'Stadium', 35.00),
     ('Holiday Gala', '2023-12-20', 'Grand Hotel', 75.00);
+
+WITH eve AS (SELECT 
+LAG(EventName) OVER (ORDER BY EventDate) AS FirstEvent,
+EventName AS SecondEvent,
+julianday(EventDate) - 
+julianday(LAG(EventDate) OVER (ORDER BY EventDate)) AS Gap
+FROM Events
+)
+SELECT eve.FirstEvent, eve.SecondEvent, MAX(eve.Gap) AS LongestGap
+FROM eve
