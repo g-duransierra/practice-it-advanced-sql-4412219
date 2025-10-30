@@ -25,3 +25,10 @@ SELECT CustomerID, SUM(Amount) AS totalsales,
 RANK() OVER (ORDER BY SUM(Amount) DESC) AS rnk 
 FROM Orders
 GROUP BY CustomerID
+LIMIT 3;
+
+SELECT OrderID,
+LAG(Quantity) OVER (ORDER BY OrderDate) AS PrevQuantity,
+Quantity AS CurrQuantity, 
+LAG(Quantity) OVER (ORDER BY OrderDate) - Quantity AS Diff
+FROM Orders
