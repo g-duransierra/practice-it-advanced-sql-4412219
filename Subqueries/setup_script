@@ -46,4 +46,19 @@ ELSE 'Below or Equal to Average'
 END AS Status
 FROM avgsalaries a
 INNER JOIN Employees e2 ON a.DepartmentID = e2.DepartmentID
-ORDER BY a.DepartmentID
+ORDER BY a.DepartmentID;
+
+SELECT
+e.EmployeeID,
+e.FirstName,
+e.LastName,
+e.Salary,
+d.DepartmentName
+FROM Employees e
+INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID
+WHERE e.Salary = (
+    SELECT MAX(Salary)
+    FROM Employees
+    WHERE DepartmentID = e.DepartmentID
+) 
+AND d.DepartmentName IS NOT 'IT'
