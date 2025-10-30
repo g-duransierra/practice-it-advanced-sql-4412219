@@ -30,3 +30,20 @@ VALUES
     ('Michael', 'Johnson', 3, 80000.00, '2023-03-10'),
     ('Emily', 'Williams', 1, 55000.00, '2023-04-05'),
     ('David', 'Brown', 4, 70000.00, '2023-05-12');
+
+WITH avgsalaries AS (
+    SELECT d.DepartmentID,d.DepartmentName, 
+    AVG(e.Salary) AS AVGDeptSalary
+    FROM Departments d 
+    INNER JOIN Employees e ON d.DepartmentID = e.DepartmentID
+    GROUP BY d.DepartmentID, d.DepartmentName
+)
+SELECT DISTINCT a.DepartmentID, a.DepartmentName, a.AVGDeptSalary,
+e2.FirstName, e2.LastName, e2.Salary,
+CASE
+WHEN e2.Salary > a.AVGDeptSalary THEN 'Above Average'
+ELSE 'Below or Equal to Average' 
+END AS Status
+FROM avgsalaries a
+INNER JOIN Employees e2 ON a.DepartmentID = e2.DepartmentID
+ORDER BY a.DepartmentID
